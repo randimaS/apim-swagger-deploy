@@ -1,0 +1,13 @@
+buildscript {
+  
+}
+
+
+group = 'com.randi'
+version = '1.0.0'
+
+apply plugin: 'java'
+apply plugin: 'maven-publish'
+
+//apply from: 'server/local.gradle'
+
