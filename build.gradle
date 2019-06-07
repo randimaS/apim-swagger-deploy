@@ -4,8 +4,10 @@ version = '1.0.0'
 
 apply plugin: 'java'
 
-apply from: 'server/server.gradle'
+apply from: 'environment.gradle'
 println "API Publisher ${apimPublisher}"
 println "API Store ${apimStore}"
+
+apply from: 'api-reader.gradle'
 
 

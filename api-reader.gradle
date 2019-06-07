@@ -1,0 +1,58 @@
+task readingApiDetails(){
+
+    def apiList = []
+
+    if (project.hasProperty('apis')) {
+        println "Reading specified APIs for deployment..."
+
+        apiList = apis.split('\n')
+
+        for (api in apiList) {
+            api = api.trim()
+            getApiConfig(api)
+        }
+
+    }
+    else{
+        println "No specified APIs for deployment!"
+    }
+}
+
+def getApiConfig(api){
+
+    println "API name : ${api}"
+    println "Reading API Configurations......."
+
+    def swaggerName = "${api}.json"
+    def apiNameArray = api.split('-')
+    def apiNameList = apiNameArray.toList()
+    def apiVersion = apiNameList.pop()
+    def apiName = apiNameList.join("-")
+    def commonConfigGradle = "${apiConfigDir}/${apiName}/${apiVersion}/${api}-common.gradle"
+    def envConfigGradle = "${apiConfigDir}/${apiName}/${apiVersion}/${api}-${deploymentEnvironment}.gradle"
+    def apiSwaggerFile = "${apiSwaggerDir}/${swaggerName}"
+
+    println "API Name ${apiName}"
+    println "API version ${apiVersion}"
+    println "SwaggerName: ${swaggerName}"
+    println "Environment: ${deploymentEnvironment}"
+    println "Conf gradle: ${commonConfigGradle}"
+    println "Conf gradle: ${envConfigGradle}"
+
+    project.ext.apiName = "${apiName}"
+    project.ext.apiVersion = "${apiVersion}"
+    project.ext.apiSwaggerFile = "${apiSwaggerFile}"
+    
+    apply from: "${commonConfigGradle}"
+    apply from: "${envConfigGradle}"
+
+    println "targetApiName in as ${project.ext.apiName}"
+    println "targetApiVersion in as ${project.ext.apiVersion}"
+    println "targetApiContext in as ${project.ext.apiContext}"
+    println "targetProductionEndpoint in as ${project.ext.apiProductionEndpoint}"
+    println "targetSandboxEndpoint in as ${project.ext.apiSandboxEndpoint}"
+    println "targetSwaggerFile in as ${project.ext.apiSwaggerFile}"
+    println "targetApiDescription in as ${project.ext.apiDescription}"
+    println "targetApiTags in as ${project.ext.apiTags}"
+
+}
