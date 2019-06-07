@@ -1,0 +1,13 @@
+ext {
+
+    apimPublisher = 'https://localhost:9443'
+    apimStore = 'https://localhost:9443/store/site/blocks'
+
+    apimHttpServer = 'http://localhost:8280'
+    apimHttpsServer = 'https://localhost:8243'
+    
+    apimUsername = 'admin'
+    apimPassword = 'admin'
+
+    apiGetTokenServer = 'https://localhost:9443/store/site/blocks'
+}

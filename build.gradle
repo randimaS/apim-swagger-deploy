@@ -1,13 +1,11 @@
-buildscript {
-  
-}
-
 
 group = 'com.randi'
 version = '1.0.0'
 
 apply plugin: 'java'
-apply plugin: 'maven-publish'
 
-//apply from: 'server/local.gradle'
+apply from: 'server/server.gradle'
+println "API Publisher ${apimPublisher}"
+println "API Store ${apimStore}"
+
 
