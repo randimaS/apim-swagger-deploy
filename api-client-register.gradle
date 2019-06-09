@@ -1,0 +1,25 @@
+task registerClient {
+    println "Register Client in API Manager .."
+
+    def clientRegJsonFile = file('client-register.json')
+    def parsedJson = new groovy.json.JsonSlurper().parseText(clientRegJsonFile.text)
+
+    def clientRegpayload = new groovy.json.JsonBuilder(parsedJson).toString()
+
+    def contentType = "Content-Type: application/json"
+    def authorization = "Authorization: Basic YWRtaW46YWRtaW4="
+    def url = "https://localhost:9443/client-registration/v0.14/register"
+    def type = "POST"
+
+    def clientRegResponse = runCurl(type,contentType,authorization,url,clientRegpayload)
+    
+    def parsedResponse =  new groovy.json.JsonSlurper().parseText(clientRegResponse)
+    
+    project.ext.clientId =  parsedResponse.clientId
+    project.ext.clientSecret =   parsedResponse.clientSecret
+}
+
+ext{
+    clientId =  project.ext.clientId
+    clientSecret = project.ext.clientSecret
+}

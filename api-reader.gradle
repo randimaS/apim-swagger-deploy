@@ -31,13 +31,10 @@ def getApiConfig(api){
     def commonConfigGradle = "${apiConfigDir}/${apiName}/${apiVersion}/${api}-common.gradle"
     def envConfigGradle = "${apiConfigDir}/${apiName}/${apiVersion}/${api}-${deploymentEnvironment}.gradle"
     def apiSwaggerFile = "${apiSwaggerDir}/${swaggerName}"
-
-    println "API Name ${apiName}"
-    println "API version ${apiVersion}"
-    println "SwaggerName: ${swaggerName}"
+    
     println "Environment: ${deploymentEnvironment}"
-    println "Conf gradle: ${commonConfigGradle}"
-    println "Conf gradle: ${envConfigGradle}"
+    println "Common config gradle: ${commonConfigGradle}"
+    println "Environment config gradle: ${envConfigGradle}"
 
     project.ext.apiName = "${apiName}"
     project.ext.apiVersion = "${apiVersion}"
@@ -46,13 +43,24 @@ def getApiConfig(api){
     apply from: "${commonConfigGradle}"
     apply from: "${envConfigGradle}"
 
-    println "targetApiName in as ${project.ext.apiName}"
-    println "targetApiVersion in as ${project.ext.apiVersion}"
-    println "targetApiContext in as ${project.ext.apiContext}"
-    println "targetProductionEndpoint in as ${project.ext.apiProductionEndpoint}"
-    println "targetSandboxEndpoint in as ${project.ext.apiSandboxEndpoint}"
-    println "targetSwaggerFile in as ${project.ext.apiSwaggerFile}"
-    println "targetApiDescription in as ${project.ext.apiDescription}"
-    println "targetApiTags in as ${project.ext.apiTags}"
+    println "ApiName in as ${project.ext.apiName}"
+    println "ApiVersion in as ${project.ext.apiVersion}"
+    println "ApiContext in as ${project.ext.apiContext}"
+    println "ProductionEndpoint in as ${project.ext.apiProductionEndpoint}"
+    println "SandboxEndpoint in as ${project.ext.apiSandboxEndpoint}"
+    println "SwaggerFile in as ${project.ext.apiSwaggerFile}"
+    println "ApiDescription in as ${project.ext.apiDescription}"
+    println "ApiTags in as ${project.ext.apiTags}"
 
+}
+
+ext{
+    refApiName = project.ext.apiName
+    refApiVersion = project.ext.apiVersion
+    refApiContext = project.ext.apiContext
+    refApiProductionEndpoint = project.ext.apiProductionEndpoint
+    refApiSandboxEndpoint = project.ext.apiSandboxEndpoint
+    refApiSwaggerFile = project.ext.apiSwaggerFile
+    refApiDescription = project.ext.apiDescription
+    refApiTags = project.ext.apiTags
 }

@@ -2,5 +2,5 @@ ext {
     apiContext = "/sample"
     apiThumb = ""
     apiDescription = "Sample API new description"
-    apiTags = ""
+    apiTags = "sample"
 }

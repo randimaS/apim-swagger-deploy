@@ -1,0 +1,25 @@
+ext {
+    runCurl = this.&runCurl
+}
+
+def runCurl(type, contentType, authorization, url, payload){
+
+    def responseString =""
+
+    new ByteArrayOutputStream().withStream { os ->
+        def result = exec {
+            executable = "curl"
+            args = [
+                    '-k', '-X', type,
+                    '-H', contentType,
+                    '-H', authorization,
+                    url,
+                    '-d', payload
+            ]
+            standardOutput = os
+        }
+        responseString = os.toString()
+        println "responseString = " + responseString
+    }
+    return responseString
+}

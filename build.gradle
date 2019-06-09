@@ -9,5 +9,6 @@ println "API Publisher ${apimPublisher}"
 println "API Store ${apimStore}"
 
 apply from: 'api-reader.gradle'
-
+apply from: 'api-utility.gradle'
+apply from: 'api-client-register.gradle'
 
