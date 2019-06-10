@@ -1,26 +1,47 @@
 ext {
     runCurl = this.&runCurl
     encodeBase64 = this.&encodeBase64
+    generateBearerToken = this.&generateBearerToken
 }
 
 def runCurl(type, contentType, authorization, url, payload){
 
     def responseString =""
 
-    new ByteArrayOutputStream().withStream { os ->
-        def result = exec {
-            executable = "curl"
-            args = [
-                    '-k', '-X', type,
-                    '-H', contentType,
-                    '-H', authorization,
-                    url,
-                    '-d', payload
-            ]
-            standardOutput = os
+    if (type) {
+
+        new ByteArrayOutputStream().withStream { os ->
+            def result = exec {
+                executable = "curl"
+                args = [
+                        '-k', '-X', type,
+                        '-H', contentType,
+                        '-H', authorization,
+                        url,
+                        '-d', payload
+                ]
+                standardOutput = os
+            }
+            responseString = os.toString()
+            println "responseString = " + responseString
         }
-        responseString = os.toString()
-        println "responseString = " + responseString
+    }
+    else{
+        println "type is empty"
+        new ByteArrayOutputStream().withStream { os ->
+            def result = exec {
+                executable = "curl"
+                args = [
+                        '-k',
+                        '-H', authorization,
+                        url,
+                        '-d', payload
+                ]
+                standardOutput = os
+            }
+            responseString = os.toString()
+            println "responseString = " + responseString
+        }
     }
     return responseString
 }
@@ -29,3 +50,21 @@ def encodeBase64(encodingStr){
     String encodedStr = encodingStr.bytes.encodeBase64().toString()
     return encodedStr
 }
+
+def generateBearerToken(scope,basicAuthCode){
+
+    def contentType = ""
+    def authorization = "Authorization: Basic "+basicAuthCode
+    def url = "${apimHttpsServer}/token"
+    def type = ""
+    def payload ="grant_type=password&username=${apimUsername}&password=${apimPassword}&scope=${scope}"
+
+    def bearerTokenResponse = runCurl(type,contentType,authorization,url,payload)
+
+    def parsedResponse =  new groovy.json.JsonSlurper().parseText(bearerTokenResponse)
+
+    def bearerToken =  parsedResponse.access_token
+
+    return bearerToken
+}
+
