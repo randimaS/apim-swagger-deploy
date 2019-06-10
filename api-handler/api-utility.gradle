@@ -26,7 +26,7 @@ def runCurl(type, contentType, authorization, url, payload){
             println "responseString = " + responseString
         }
     }
-    else{
+    else if(payload){
         println "type is empty"
         new ByteArrayOutputStream().withStream { os ->
             def result = exec {
@@ -36,6 +36,22 @@ def runCurl(type, contentType, authorization, url, payload){
                         '-H', authorization,
                         url,
                         '-d', payload
+                ]
+                standardOutput = os
+            }
+            responseString = os.toString()
+            println "responseString = " + responseString
+        }
+    }
+    else{
+        println "payload is empty"
+        new ByteArrayOutputStream().withStream { os ->
+            def result = exec {
+                executable = "curl"
+                args = [
+                        '-k',
+                        '-H', authorization,
+                        url
                 ]
                 standardOutput = os
             }

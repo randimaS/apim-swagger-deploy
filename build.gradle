@@ -14,3 +14,4 @@ apply from: 'api-handler/api-client-register.gradle'
 
 println "Basic Auth Code: ${basicAuthCode}"
 
+apply from: 'api-handler/api-creator.gradle'

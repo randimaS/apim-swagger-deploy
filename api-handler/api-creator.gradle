@@ -1,0 +1,36 @@
+task getBearer{
+    def apiViewToken = generateBearerToken("apim:api_view",basicAuthCode)
+    def apiCreateToken = generateBearerToken("apim:api_create",basicAuthCode)
+
+    if(checkApiExists(refApiName,apiViewToken)){
+        println "Already API is existing...update will happen"
+    }
+    else{
+        println "API is not existing...create will happen"
+    }
+
+}
+
+def checkApiExists(apiName,bearerToken){
+
+    def contentType = ""
+    def authorization = "Authorization: Bearer "+bearerToken
+    def url = "${apimPublisher}/api/am/publisher/v0.14/apis?query=name:${apiName}"
+    def type = ""
+    def payload =""
+
+    def apiSearchResponse = runCurl(type,contentType,authorization,url,payload)
+
+    def parsedResponse =  new groovy.json.JsonSlurper().parseText(apiSearchResponse)
+
+    def apiCount =  parsedResponse.count
+
+    if(apiCount==0){
+        return false
+    }
+    else{
+        return true
+    }
+
+}
+
