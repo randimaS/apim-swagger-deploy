@@ -1,5 +1,6 @@
 ext {
 
+    apimServer = 'https://localhost:9443'
     apimPublisher = 'https://localhost:9443'
     apimStore = 'https://localhost:9443/store/site/blocks'
 

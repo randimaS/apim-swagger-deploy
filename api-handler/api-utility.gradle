@@ -1,5 +1,6 @@
 ext {
     runCurl = this.&runCurl
+    encodeBase64 = this.&encodeBase64
 }
 
 def runCurl(type, contentType, authorization, url, payload){
@@ -22,4 +23,9 @@ def runCurl(type, contentType, authorization, url, payload){
         println "responseString = " + responseString
     }
     return responseString
+}
+
+def encodeBase64(encodingStr){
+    String encodedStr = encodingStr.bytes.encodeBase64().toString()
+    return encodedStr
 }
