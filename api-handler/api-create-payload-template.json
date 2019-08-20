@@ -1,0 +1,29 @@
+{
+  "name": "PizzaShackAPI",
+  "description": "This document describe a RESTFul API for Pizza Shack online pizza delivery store.\r\n",
+  "context": "/pizzashack",
+  "version": "2.0.0",
+  "apiDefinition": "{\"paths\":{\"\\/order\":{\"post\":{\"x-auth-type\":\"Application & Application User\",\"x-throttling-tier\":\"Unlimited\",\"description\":\"Create a new Order\",\"parameters\":[{\"schema\":{\"$ref\":\"#\\/definitions\\/Order\"},\"description\":\"Order object that needs to be added\",\"name\":\"body\",\"required\":true,\"in\":\"body\"}],\"responses\":{\"201\":{\"schema\":{\"$ref\":\"#\\/definitions\\/Order\"},\"headers\":{\"Location\":{\"description\":\"The URL of the newly created resource.\",\"type\":\"string\"}},\"description\":\"Created.\"}}}},\"\\/menu\":{\"get\":{\"x-auth-type\":\"Application & Application User\",\"x-throttling-tier\":\"Unlimited\",\"description\":\"Return a list of available menu items\",\"parameters\":[],\"responses\":{\"200\":{\"schema\":{\"title\":\"Menu\",\"properties\":{\"list\":{\"items\":{\"$ref\":\"#\\/definitions\\/MenuItem\"},\"type\":\"array\"}},\"type\":\"object\"},\"headers\":{},\"description\":\"OK.\"}}}}},\"schemes\":[\"https\"],\"produces\":[\"application\\/json\"],\"swagger\":\"2.0\",\"definitions\":{\"MenuItem\":{\"title\":\"Pizza menu Item\",\"properties\":{\"price\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"},\"name\":{\"type\":\"string\"},\"image\":{\"type\":\"string\"}},\"required\":[\"name\"]},\"Order\":{\"title\":\"Pizza Order\",\"properties\":{\"customerName\":{\"type\":\"string\"},\"delivered\":{\"type\":\"boolean\"},\"pizzaType\":{\"type\":\"string\"},\"address\":{\"type\":\"string\"},\"creditCardNumber\":{\"type\":\"string\"},\"quantity\":{\"type\":\"number\"},\"orderId\":{\"type\":\"string\"}},\"required\":[\"orderId\"]}},\"consumes\":[\"application\\/json\"],\"info\":{\"title\":\"PizzaShackAPI\",\"description\":\"This document describe a RESTFul API for Pizza Shack online pizza delivery store.\\n\",\"license\":{\"name\":\"Apache 2.0\",\"url\":\"http:\\/\\/www.apache.org\\/licenses\\/LICENSE-2.0.html\"},\"contact\":{\"email\":\"architecture@pizzashack.com\",\"name\":\"John Doe\",\"url\":\"http:\\/\\/www.pizzashack.com\"},\"version\":\"2.0.0\"}}",
+  "status": "CREATED",
+  "isDefaultVersion": false,
+  "transport": ["https"],
+  "tags": [
+    "chicken",
+    "pizza"
+  ],
+  "tiers": ["Unlimited"],
+  "thumbnailUri": "",
+  "visibility": "PUBLIC",
+  "endpointConfig": "{\"production_endpoints\":{\"url\":\"https://localhost:9443/am/sample/pizzashack/v1/api/\",\"config\":null},\"sandbox_endpoints\":{\"url\":\"https://localhost:9443/am/sample/pizzashack/v1/api/\",\"config\":null},\"endpoint_type\":\"http\"}",
+  "endpointSecurity": {},
+  "gatewayEnvironments": "Production and Sandbox",
+  "sequences": [],
+  "businessInformation": {},
+  "corsConfiguration": {
+    "accessControlAllowOrigins": ["*"],
+    "accessControlAllowHeaders": [],
+    "accessControlAllowMethods": [],
+    "accessControlAllowCredentials": false,
+    "corsConfigurationEnabled": false
+  }
+}

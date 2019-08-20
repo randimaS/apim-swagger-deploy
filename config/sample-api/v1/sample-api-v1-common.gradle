@@ -1,6 +1,17 @@
 ext {
     apiContext = "/sample"
-    apiThumb = ""
-    apiDescription = "Sample API new description"
-    apiTags = "sample"
+    apiThumbnail = ""
+    apiDescription = "Sample API description"
+    apiTags = ["sample"]
+    apiIsDefaultVersion = true
+    apiTransport = ["https","http"]
+    apiTiers = ["Unlimited"]
+    apiVisibility = "PUBLIC"
+    apiSequences = []
+    apiAccessControlAllowOrigins = ["*"]
+    apiAccessControlAllowHeaders = []
+    apiAccessControlAllowMethods = []
+    apiAccessControlAllowCredentials = false
+    apiCorsConfigurationEnabled = false
+
 }

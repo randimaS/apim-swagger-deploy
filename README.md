@@ -13,7 +13,7 @@ $ wso2am-2.6.0
 ```
 - To deploy a specific API
 ```sh
-$ ./gradlew build -Papis="test-api-v1"
+$ ./gradlew build -Papis="sample-api-v1"
 ```
 - To deploy a set of specific APIs
 ```sh

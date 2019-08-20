@@ -1,0 +1,13 @@
+---
+swagger: '2.0'
+paths:
+  "/greeting":
+    get:
+      responses:
+        '200':
+          description: ''
+      x-auth-type: Application & Application User
+      x-throttling-tier: Unlimited
+info:
+  title: sample-api
+  version: v1

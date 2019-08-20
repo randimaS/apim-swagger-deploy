@@ -1,12 +1,34 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath group: 'org.yaml', name: 'snakeyaml', version: '1.19'
+    }
+}
+
 task getBearer{
     def apiViewToken = generateBearerToken("apim:api_view",basicAuthCode)
     def apiCreateToken = generateBearerToken("apim:api_create",basicAuthCode)
 
-    if(checkApiExists(refApiName,apiViewToken)){
-        println "Already API is existing...update will happen"
+    //new org.yaml.snakeyaml.Yaml().load(new File("config/sample-api/v1/sample-api-v1.yaml").newInputStream())
+
+    def apiPayload = createApiPayload(refApiSwaggerFile)
+
+    println "Swagger import is successful"
+
+    def apiExistsPayload = checkApiExists(refApiName,apiViewToken)
+    def apiExistsJson = new groovy.json.JsonSlurper().parseText(apiExistsPayload)
+    if(apiExistsJson.count!=0){
+        println "API already exists...update will happen..."
+        def apiId = apiExistsJson.list[0].id
+        println "Existing API id : ${apiId}"
+        updateApi(apiId,apiPayload,apiCreateToken)
     }
     else{
-        println "API is not existing...create will happen"
+        println "API does not exist...create will happen..."
+        createApi(apiPayload,apiCreateToken)
+        println "API created"
     }
 
 }
@@ -21,16 +43,82 @@ def checkApiExists(apiName,bearerToken){
 
     def apiSearchResponse = runCurl(type,contentType,authorization,url,payload)
 
-    def parsedResponse =  new groovy.json.JsonSlurper().parseText(apiSearchResponse)
+    return apiSearchResponse
 
-    def apiCount =  parsedResponse.count
+}
 
-    if(apiCount==0){
-        return false
-    }
-    else{
-        return true
-    }
 
+def createApi(createPayload,bearerToken){
+
+    def contentType = "Content-Type: application/json"
+    def authorization = "Authorization: Bearer "+bearerToken
+    def url = "${apimPublisher}/api/am/publisher/v0.14/apis"
+    def type = "POST"
+    def payload ="${createPayload}"
+
+    def apiCreateResponse = runCurl(type,contentType,authorization,url,payload)
+
+    return apiCreateResponse
+}
+
+def updateApi(apiId,createPayload,bearerToken){
+
+    def contentType = "Content-Type: application/json"
+    def authorization = "Authorization: Bearer "+bearerToken
+    def url = "${apimPublisher}/api/am/publisher/v0.14/apis/${apiId}"
+    def type = "PUT"
+    def payload ="${createPayload}"
+
+    def apiUpdateResponse = runCurl(type,contentType,authorization,url,payload)
+
+    return apiUpdateResponse
+}
+
+def createApiPayload(apiSwaggerFile){
+
+    def swaggerContent = file(apiSwaggerFile).text
+    def slurpedSwaggerJson = new groovy.json.JsonSlurper().parseText(swaggerContent)
+    def refSwaggerString = new groovy.json.JsonBuilder(slurpedSwaggerJson).toString()
+
+    def endpointConfigContent = file('api-handler/api-endpont-config-template.json').text
+    def slurpedEndpointConfigJson = new groovy.json.JsonSlurper().parseText(endpointConfigContent)
+    def endpointConfigJsonBuilder = new groovy.json.JsonBuilder(slurpedEndpointConfigJson)
+
+    endpointConfigJsonBuilder.content.production_endpoints.url = refApiProductionEndpoint
+    endpointConfigJsonBuilder.content.sandbox_endpoints.url = refApiSandboxEndpoint
+
+    def refEndpointConfigString = new groovy.json.JsonBuilder(slurpedEndpointConfigJson).toString()
+
+    def templateJsonContent = file('api-handler/api-create-payload-template.json').text
+
+    def slurpedTemplateJson = new groovy.json.JsonSlurper().parseText(templateJsonContent)
+    def templateJsonBuilder = new groovy.json.JsonBuilder(slurpedTemplateJson)
+
+    templateJsonBuilder.content.name = refApiName
+    templateJsonBuilder.content.context = refApiContext
+    templateJsonBuilder.content.description = refApiDescription
+    templateJsonBuilder.content.version = refApiVersion
+    templateJsonBuilder.content.apiDefinition = refSwaggerString
+    templateJsonBuilder.content.isDefaultVersion = refApiIsDefaultVersion
+    templateJsonBuilder.content.transport = refApiTransport
+    templateJsonBuilder.content.tags = refApiTags
+    templateJsonBuilder.content.tiers = refApiTiers
+    templateJsonBuilder.content.thumbnailUri = refApiThumbnail
+    templateJsonBuilder.content.visibility = refApiVisibility
+    templateJsonBuilder.content.endpointConfig = refEndpointConfigString
+    //templateJsonBuilder.content.endpointSecurity = refApiDescription
+    templateJsonBuilder.content.gatewayEnvironments = refApiGatewayEnvironments
+    templateJsonBuilder.content.sequences = refApiSequences
+    templateJsonBuilder.content.corsConfiguration.accessControlAllowOrigins = refApiAccessControlAllowOrigins
+    templateJsonBuilder.content.corsConfiguration.accessControlAllowHeaders = refApiAccessControlAllowHeaders
+    templateJsonBuilder.content.corsConfiguration.accessControlAllowMethods = refApiAccessControlAllowMethods
+    templateJsonBuilder.content.corsConfiguration.accessControlAllowCredentials = refApiAccessControlAllowCredentials
+    templateJsonBuilder.content.corsConfiguration.corsConfigurationEnabled = refApiCorsConfigurationEnabled
+
+    println(templateJsonBuilder.toPrettyString())
+
+    def createApiPayload = new groovy.json.JsonBuilder(slurpedTemplateJson).toString()
+
+    return createApiPayload
 }
 

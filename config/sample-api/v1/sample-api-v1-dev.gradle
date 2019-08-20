@@ -1,4 +1,6 @@
 ext {
     apiProductionEndpoint = "http://www.mocky.io/v2/5c94bcfd3600006300941c4a"
     apiSandboxEndpoint = "http://www.mocky.io/v2/5c94bcfd3600006300941c4a"
+    apiProductionEndpointSecurity = ""
+    apiGatewayEnvironments = "Production and Sandbox"
 }

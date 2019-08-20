@@ -1,0 +1,11 @@
+{
+  "production_endpoints": {
+    "url": "https://localhost:9443/am/sample/pizzashack/v1/api/",
+    "config": null
+  },
+  "sandbox_endpoints": {
+    "url": "https://localhost:9443/am/sample/pizzashack/v1/api/",
+    "config": null
+  },
+  "endpoint_type": "http"
+}

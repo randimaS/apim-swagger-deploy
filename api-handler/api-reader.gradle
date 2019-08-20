@@ -51,6 +51,17 @@ def getApiConfig(api){
     println "SwaggerFile in as ${project.ext.apiSwaggerFile}"
     println "ApiDescription in as ${project.ext.apiDescription}"
     println "ApiTags in as ${project.ext.apiTags}"
+    println "ApiIsDefaultVersion in as ${project.ext.apiIsDefaultVersion}"
+    println "ApiTransport in as ${project.ext.apiTransport}"
+    println "ApiTiers in as ${project.ext.apiTiers}"
+    println "ApiVisibility in as ${project.ext.apiVisibility}"
+    println "ApiSequences in as ${project.ext.apiSequences}"
+    println "ApiAccessControlAllowOrigins in as ${project.ext.apiAccessControlAllowOrigins}"
+    println "ApiAccessControlAllowHeaders in as ${project.ext.apiAccessControlAllowHeaders}"
+    println "ApiAccessControlAllowMethods in as ${project.ext.apiAccessControlAllowMethods}"
+    println "ApiAccessControlAllowCredentials in as ${project.ext.apiAccessControlAllowCredentials}"
+    println "ApiCorsConfigurationEnabled in as ${project.ext.apiCorsConfigurationEnabled}"
+    println "ApiGatewayEnvironments in as ${project.ext.apiGatewayEnvironments}"
 
 }
 
@@ -63,4 +74,16 @@ ext{
     refApiSwaggerFile = project.ext.apiSwaggerFile
     refApiDescription = project.ext.apiDescription
     refApiTags = project.ext.apiTags
+    refApiIsDefaultVersion = project.ext.apiIsDefaultVersion
+    refApiTransport = project.ext.apiTransport
+    refApiTiers = project.ext.apiTiers
+    refApiVisibility =  project.ext.apiVisibility
+    refApiSequences = project.ext.apiSequences
+    refApiAccessControlAllowOrigins = project.ext.apiAccessControlAllowOrigins
+    refApiAccessControlAllowHeaders = project.ext.apiAccessControlAllowHeaders
+    refApiAccessControlAllowMethods = project.ext.apiAccessControlAllowMethods
+    refApiAccessControlAllowCredentials = project.ext.apiAccessControlAllowCredentials
+    refApiCorsConfigurationEnabled = project.ext.apiCorsConfigurationEnabled
+    refApiGatewayEnvironments = project.ext.apiGatewayEnvironments
+    refApiThumbnail = project.ext.apiThumbnail
 }
