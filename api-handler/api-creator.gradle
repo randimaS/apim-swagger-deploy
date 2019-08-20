@@ -80,7 +80,7 @@ def createApiPayload(apiSwaggerFile){
     def slurpedSwaggerJson = new groovy.json.JsonSlurper().parseText(swaggerContent)
     def refSwaggerString = new groovy.json.JsonBuilder(slurpedSwaggerJson).toString()
 
-    def endpointConfigContent = file('api-handler/api-endpont-config-template.json').text
+    def endpointConfigContent = file('api-handler/templates/api-endpont-config-template.json').text
     def slurpedEndpointConfigJson = new groovy.json.JsonSlurper().parseText(endpointConfigContent)
     def endpointConfigJsonBuilder = new groovy.json.JsonBuilder(slurpedEndpointConfigJson)
 
@@ -89,7 +89,7 @@ def createApiPayload(apiSwaggerFile){
 
     def refEndpointConfigString = new groovy.json.JsonBuilder(slurpedEndpointConfigJson).toString()
 
-    def templateJsonContent = file('api-handler/api-create-payload-template.json').text
+    def templateJsonContent = file('api-handler/templates/api-create-payload-template.json').text
 
     def slurpedTemplateJson = new groovy.json.JsonSlurper().parseText(templateJsonContent)
     def templateJsonBuilder = new groovy.json.JsonBuilder(slurpedTemplateJson)

@@ -1,7 +1,7 @@
 task registerClient {
     println "Register Client in API Manager .."
 
-    def clientRegJsonFile = file('api-handler/client-register.json')
+    def clientRegJsonFile = file('api-handler/templates/client-register.json')
     def parsedJson = new groovy.json.JsonSlurper().parseText(clientRegJsonFile.text)
 
     def clientRegpayload = new groovy.json.JsonBuilder(parsedJson).toString()
