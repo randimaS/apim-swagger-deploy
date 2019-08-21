@@ -17,6 +17,8 @@ if (project.hasProperty('apis')) {
     println "Basic Auth Code: ${basicAuthCode}"
 
     apply from: 'api-handler/api-creator.gradle'
+    //apply from: 'api-handler/api-remover.gradle'
+
 }else{
     println "No specified APIs for deployment!"
 }

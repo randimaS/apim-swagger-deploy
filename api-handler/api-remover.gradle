@@ -1,0 +1,30 @@
+task removeApi{
+    def apiViewToken = generateBearerToken("apim:api_view",basicAuthCode)
+    def apiCreateToken = generateBearerToken("apim:api_create",basicAuthCode)
+
+    def apiExistsPayload = checkApiExists(refApiName,apiViewToken)
+    def apiExistsJson = new groovy.json.JsonSlurper().parseText(apiExistsPayload)
+    if(apiExistsJson.count!=0){
+        println "API already exists...delete will happen..."
+        def apiId = apiExistsJson.list[0].id
+        println "Existing API id : ${apiId}"
+        deleteApi(apiId,apiCreateToken)
+    }
+    else{
+        println "API does not exist...cannot delete..."
+    }
+}
+
+def deleteApi(apiId,bearerToken){
+
+    def contentType = ""
+    def authorization = "Authorization: Bearer "+bearerToken
+    def url = "${apimPublisher}/api/am/publisher/v0.14/apis/${apiId}"
+    def type = "DELETE"
+    def payload =""
+
+    def apiDeleteResponse = runCurl(type,contentType,authorization,url,payload)
+
+    return apiDeleteResponse
+
+}

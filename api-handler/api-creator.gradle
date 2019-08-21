@@ -7,7 +7,7 @@ buildscript {
     }
 }
 
-task getBearer{
+task addApi{
     def apiViewToken = generateBearerToken("apim:api_view",basicAuthCode)
     def apiCreateToken = generateBearerToken("apim:api_create",basicAuthCode)
 
@@ -32,21 +32,6 @@ task getBearer{
     }
 
 }
-
-def checkApiExists(apiName,bearerToken){
-
-    def contentType = ""
-    def authorization = "Authorization: Bearer "+bearerToken
-    def url = "${apimPublisher}/api/am/publisher/v0.14/apis?query=name:${apiName}"
-    def type = ""
-    def payload =""
-
-    def apiSearchResponse = runCurl(type,contentType,authorization,url,payload)
-
-    return apiSearchResponse
-
-}
-
 
 def createApi(createPayload,bearerToken){
 

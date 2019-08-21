@@ -2,32 +2,62 @@ ext {
     runCurl = this.&runCurl
     encodeBase64 = this.&encodeBase64
     generateBearerToken = this.&generateBearerToken
+    checkApiExists = this.&checkApiExists
 }
 
-def runCurl(type, contentType, authorization, url, payload){
+def runCurl(http_action, contentType, authorization, url, payload){
 
-    def responseString =""
+    def responseString = ""
+    def httpStatusCode = ""
+    def responsePayload = ""
 
-    if (type) {
+    if (http_action) {
 
-        new ByteArrayOutputStream().withStream { os ->
-            def result = exec {
-                executable = "curl"
-                args = [
-                        '-k', '-X', type,
-                        '-H', contentType,
-                        '-H', authorization,
-                        url,
-                        '-d', payload
-                ]
-                standardOutput = os
+        if (payload) {
+
+            println "CURL with HTTP Method and Payload"
+
+            new ByteArrayOutputStream().withStream { os ->
+                def result = exec {
+                    executable = "curl"
+                    args = [
+                            '-k', '-X', http_action,
+                            '-H', contentType,
+                            '-H', authorization,
+                            url,
+                            '-d', payload
+                    ]
+                    standardOutput = os
+                }
+                responseString = os.toString()
+                println "responseString = " + responseString
             }
-            responseString = os.toString()
-            println "responseString = " + responseString
+        }
+        else{
+
+            println "CURL with only HTTP Method"
+
+            new ByteArrayOutputStream().withStream { os ->
+                def result = exec {
+                    executable = "curl"
+                    args = [
+                            '-k', '-X', http_action,
+                            '-H', contentType,
+                            '-H', authorization,
+                            url
+                    ]
+                    standardOutput = os
+                }
+                responseString = os.toString()
+                println "responseString = " + responseString
+            }
+
         }
     }
     else if(payload){
-        println "type is empty"
+
+        println "CURL without an HTTP Method but with payload"
+
         new ByteArrayOutputStream().withStream { os ->
             def result = exec {
                 executable = "curl"
@@ -44,7 +74,7 @@ def runCurl(type, contentType, authorization, url, payload){
         }
     }
     else{
-        println "payload is empty"
+        println "CURL without an HTTP Method and payload"
         new ByteArrayOutputStream().withStream { os ->
             def result = exec {
                 executable = "curl"
@@ -82,5 +112,19 @@ def generateBearerToken(scope,basicAuthCode){
     def bearerToken =  parsedResponse.access_token
 
     return bearerToken
+}
+
+def checkApiExists(apiName,bearerToken){
+
+    def contentType = ""
+    def authorization = "Authorization: Bearer "+bearerToken
+    def url = "${apimPublisher}/api/am/publisher/v0.14/apis?query=name:${apiName}"
+    def type = ""
+    def payload =""
+
+    def apiSearchResponse = runCurl(type,contentType,authorization,url,payload)
+
+    return apiSearchResponse
+
 }
 
